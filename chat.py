@@ -13,7 +13,7 @@ vector_db = QdrantVectorStore.from_existing_collection(
 )
 
 # Take user input
-user_query = input("Ask Something")
+user_query = input("Ask Something: ")
 
 # Returns Relevant chunks from the vector db
 search_results = vector_db.similarity_search(query=user_query)
