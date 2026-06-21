@@ -1,6 +1,8 @@
 from pathlib import Path
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_openai import OpenAIEmbeddings
+from langchain_qdrant import QdrantVectorStore
 
 pdf_path=Path(__file__).parent/"nodejs.pdf"
 
@@ -16,3 +18,15 @@ text_splitter = RecursiveCharacterTextSplitter(
 chunks = text_splitter.split_documents(documents=docs)
 
 #Vector Embeddings
+embedding_model = OpenAIEmbeddings(
+    model = "text-embedding-3-large"
+)
+
+vector_store=QdrantVectorStore.from_documents(
+    documents=chunks,
+    embedding=embedding_model,
+    url="http://localhost:6333",
+    collection_name="RAG"
+)
+
+print("Indexing of documents done!")
